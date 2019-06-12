@@ -1,0 +1,45 @@
+---
+# Source: hello-rings-featurea/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-rings-featurea
+  labels:
+    app.kubernetes.io/name: hello-rings-featurea
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hello-rings-featurea
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hello-rings-featurea
+    spec:
+      containers:
+        - name: hello-rings-featurea
+          image: "hellorings.azurecr.io/hellorings:hello-rings-featurea-3891"
+          imagePullPolicy: IfNotPresent
+          ports: 
+            - containerPort: 8080
+
+---
+# Source: hello-rings-featurea/templates/ring.yaml
+apiVersion: rings.microsoft.com/v1alpha1
+kind: Ring
+metadata:
+  name: featurea
+spec:
+  # Deploy to environment
+  deploy: true
+  # Custom Claims
+  claim: featurea
+  entryPoints:
+    # Source of traffic (eg: 80 or 443)
+    - http
+    - https
+    - internal
+  match: PathPrefix(`/`) && Headers(`x-ring`, `featurea`)
+  selector:
+    app.kubernetes.io/name: hello-rings-featurea
+

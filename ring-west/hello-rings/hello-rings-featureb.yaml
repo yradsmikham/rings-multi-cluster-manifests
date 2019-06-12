@@ -1,0 +1,46 @@
+---
+# Source: hello-rings-featureb/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-rings-featureb
+  labels:
+    app.kubernetes.io/name: hello-rings-featureb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: hello-rings-featureb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: hello-rings-featureb
+    spec:
+      containers:
+        - name: hello-rings-featureb
+          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-3894"
+          imagePullPolicy: IfNotPresent
+          ports: 
+            - containerPort: 8080
+
+---
+# Source: hello-rings-featureb/templates/ring.yaml
+# Source: hello-ring/templates/ring.yaml
+apiVersion: rings.microsoft.com/v1alpha1
+kind: Ring
+metadata:
+  name: featureb
+spec:
+  # Deploy to environment
+  deploy: true
+  # Custom Claims
+  claim: featureb
+  entryPoints:
+    # Source of traffic (eg: 80 or 443)
+    - http
+    - https
+    - internal
+  match: PathPrefix(`/`) && Headers(`x-ring`, `featureb`)
+  selector:
+    app.kubernetes.io/name: hello-rings-featureb
+
