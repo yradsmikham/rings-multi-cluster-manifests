@@ -1,46 +1,46 @@
 ---
-# Source: hello-rings-featureb/templates/deployment.yaml
+# Source: hello-rings-featurec/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-rings-featureb
+  name: hello-rings-featurec
   labels:
-    app.kubernetes.io/name: hello-rings-featureb
+    app.kubernetes.io/name: hello-rings-featurec
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: hello-rings-featureb
+      app.kubernetes.io/name: hello-rings-featurec
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: hello-rings-featureb
+        app.kubernetes.io/name: hello-rings-featurec
     spec:
       containers:
-        - name: hello-rings-featureb
-          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-3951"
+        - name: hello-rings-featurec
+          image: "hellorings.azurecr.io/hellorings:hello-rings-featurec-3975"
           imagePullPolicy: IfNotPresent
           ports: 
             - containerPort: 8080
 
 ---
-# Source: hello-rings-featureb/templates/ring.yaml
+# Source: hello-rings-featurec/templates/ring.yaml
 # Source: hello-ring/templates/ring.yaml
 apiVersion: rings.microsoft.com/v1alpha1
 kind: Ring
 metadata:
-  name: featureb
+  name: featurec
 spec:
   # Deploy to environment
   deploy: true
   # Custom Claims
-  claim: featureb
+  claim: featurec
   entryPoints:
     # Source of traffic (eg: 80 or 443)
     - http
     - https
     - internal
-  match: PathPrefix(`/`) && Headers(`x-ring`, `featureb`)
+  match: PPathPrefix(`/`) && Headers(`x-ring`, `featurec`)
   selector:
-    app.kubernetes.io/name: hello-rings-featureb
+    app.kubernetes.io/name: hello-rings-featurec
 

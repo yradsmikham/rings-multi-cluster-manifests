@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: hello-rings-featureb
-          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-3894"
+          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-3951"
           imagePullPolicy: IfNotPresent
           ports: 
             - containerPort: 8080
