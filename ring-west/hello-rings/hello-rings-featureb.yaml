@@ -11,17 +11,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: hello-rings-featureb
+
   template:
     metadata:
       labels:
         app.kubernetes.io/name: hello-rings-featureb
+
     spec:
       containers:
         - name: hello-rings-featureb
-          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-3951"
+          image: "hellorings.azurecr.io/hellorings:hello-rings-featureb-4021"
           imagePullPolicy: IfNotPresent
-          ports: 
+          ports:
             - containerPort: 8080
+
 
 ---
 # Source: hello-rings-featureb/templates/ring.yaml
@@ -43,4 +46,5 @@ spec:
   match: PathPrefix(`/`) && Headers(`x-ring`, `featureb`)
   selector:
     app.kubernetes.io/name: hello-rings-featureb
+
 

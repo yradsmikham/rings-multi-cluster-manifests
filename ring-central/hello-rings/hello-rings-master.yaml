@@ -11,17 +11,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: hello-rings-master
+
   template:
     metadata:
       labels:
         app.kubernetes.io/name: hello-rings-master
+
     spec:
       containers:
         - name: hello-rings-master
-          image: "hellorings.azurecr.io/hellorings:hello-rings-master-3950"
+          image: "hellorings.azurecr.io/hellorings:hello-rings-master-4019"
           imagePullPolicy: IfNotPresent
-          ports: 
+          ports:
             - containerPort: 8080
+
 
 ---
 # Source: hello-rings-master/templates/ring.yaml
@@ -29,7 +32,7 @@ spec:
 apiVersion: rings.microsoft.com/v1alpha1
 kind: Ring
 metadata:
-  name: master
+  name: production
 spec:
   # Deploy to environment
   deploy: true
@@ -40,7 +43,8 @@ spec:
     - http
     - https
     - internal
-  match: PPathPrefix(`/`) && Headers(`x-ring`, `production`)
+  match: PathPrefix(`/`) && Headers(`x-ring`, `production`)
   selector:
     app.kubernetes.io/name: hello-rings-master
+
 
